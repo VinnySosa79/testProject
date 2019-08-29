@@ -1,0 +1,172 @@
+public class AccountContactFactory {
+    public static List<Account> generateAccountData(Integer numAccounts){
+        List<Account> accountData = new List<Account>();
+        for(Integer i = 0; i < numAccounts; i++){
+            Account a = new Account();
+            a.Name = 'Test' + i;
+            a.Phone = '00000000' + i;
+            a.Type = 'Other';
+            a.Industry = 'Electronics';
+            a.Website = 'www.test' + i +'.url';
+			a.NumberOfEmployees = i;           
+            a.AnnualRevenue = i;
+            a.Ownership = 'Other';
+            accountData.add(a);
+            system.debug(accountData[i]);
+        }
+        
+        return accountData;
+    }
+    
+    public static List<Contact> generateContactData(Integer numContacts){
+        List<Contact> contactData = new List<Contact>();
+        for(Integer i = 0; i < numContacts; i++){
+            Contact c = new Contact();
+            c.lastname = 'TestContact ' + i;
+            c.Phone = '00000000' + i;
+            c.Email = 'contact' + i + '@email.com';
+    		contactData.add(c);
+            system.debug(contactData[i]);
+        }
+        return contactData;
+    }
+    
+    public static List<Case> generateCaseDataWAC(Integer numCases){ //With accounts and contacts
+        List<Case> caseData = new List<Case>();
+        
+        List<Account> accountData = new List<Account>();
+        accountData = AccountContactFactory.generateAccountData(numCases);
+        
+        List<Contact> contactData = new List<Contact>();
+        contactData = AccountContactFactory.generateContactData(numCases);
+        
+        for(Integer i = 0; i < numCases; i++){
+            Case case1 = new Case();
+            case1.AccountId = accountData[i].valueOf(accountData[i]);
+            case1.ContactId = contactData[i].id;
+        	case1.Type = 'Other';
+        	case1.Product__c = 'GC1040';
+        	case1.Origin = 'Phone';
+        	case1.Status = 'New';
+            caseData.add(case1);
+            System.debug(caseData[i]);
+        }
+        return caseData;
+    }
+    
+    public static List<Case> generateCaseDataWOA(Integer numCases){ //generating cases without accounts
+        List<Case> caseData = new List<Case>();
+        
+        List<Contact> contactData = new List<Contact>();
+        contactData = AccountContactFactory.generateContactData(numCases);
+        
+        for(Integer i = 0; i < numCases; i++){
+            Case case1 = new Case();
+            case1.ContactId = contactData[i].id;
+        	case1.Type = 'Other';
+        	case1.Product__c = 'GC1040';
+        	case1.Origin = 'Phone';
+        	case1.Status = 'New';
+            caseData.add(case1);
+            System.debug(caseData[i]);
+        }
+        return caseData;
+    }
+    
+    public static List<Case> generateCaseDataWOC(Integer numCases){ //generating cases without contacts
+        List<Case> caseData = new List<Case>();
+        
+        List<Account> accountData = new List<Account>();
+        accountData = AccountContactFactory.generateAccountData(numCases);
+        
+        for(Integer i = 0; i < numCases; i++){
+            Case case1 = new Case();
+            case1.AccountId = accountData[i].id;
+        	case1.Type = 'Other';
+        	case1.Product__c = 'GC1040';
+        	case1.Origin = 'Phone';
+        	case1.Status = 'New';
+            caseData.add(case1);
+            System.debug(caseData[i]);
+        }
+        return caseData;
+    }
+    
+    public static List<Case> generateCaseDataWOAC(Integer numCases){ //generating cases without accounts or contacts
+        List<Case> caseData = new List<Case>();
+        
+        for(Integer i = 0; i < numCases; i++){
+            Case case1 = new Case();
+        	case1.Type = 'Other';
+        	case1.Product__c = 'GC1040';
+        	case1.Origin = 'Phone';
+        	case1.Status = 'New';
+            caseData.add(case1);
+            System.debug(caseData[i]);
+        }
+        return caseData;
+    }
+    
+    //Try to fix the caseGenerator later!
+    public static List<Case> randomCaseDataGenerator(Integer numCases){
+        List<Case> caseData = new List<Case>();
+        
+        List<Account> accountData = new List<Account>();
+        accountData = AccountContactFactory.generateAccountData(numCases);
+        
+        List<Contact> contactData = new List<Contact>();
+        contactData = AccountContactFactory.generateContactData(numCases);
+        
+        //Randomize the creation of cases i % 2 
+        //use random number generator
+        
+        
+        
+        //Creating cases with: 
+        //(0) Accounts and Contacts, 
+        //(1) Accounts and no Contact, 
+        //(2) Contact and no Account
+        for(Integer i = 0; i < numCases; i++){
+            
+            Integer randomNumber = Integer.valueOf(Math.random() * 10);
+			Integer randomCaseGenerator = Math.mod(randomNumber,3);
+            
+        	if(randomCaseGenerator == 0){
+        	
+        		Case case1 = new Case();
+            	case1.AccountId = accountData[i].Id;
+            	case1.ContactId = contactData[i].Id;
+        		case1.Type = 'Other';
+        		case1.Product__c = 'GC1040';
+        		case1.Origin = 'Phone';
+        		case1.Status = 'New';
+            	caseData.add(case1);
+                System.debug(caseData[i]);
+                
+        	} else if(randomCaseGenerator == 1){
+                
+        		Case case1 = new Case();
+            	case1.AccountId = accountData[i].id;
+        		case1.Type = 'Other';
+        		case1.Product__c = 'GC1040';
+        		case1.Origin = 'Phone';
+        		case1.Status = 'New';
+            	caseData.add(case1);
+                System.debug(caseData[i]);
+                
+        	} else{
+                
+        		Case case1 = new Case();
+            	case1.ContactId = contactData[i].id;
+        		case1.Type = 'Other';
+        		case1.Product__c = 'GC1040';
+        		case1.Origin = 'Phone';
+        		case1.Status = 'New';
+            	caseData.add(case1);
+                System.debug(caseData[i]);
+                
+        	}
+        }
+        return caseData;
+    }
+}
